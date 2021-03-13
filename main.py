@@ -3,10 +3,10 @@ from PIL import Image
 
 from utils.shape import is_inside, get_polygon
 from utils.homography import find_h_inv, find_decal_point
-from config import PICTURE, DECAL, PICTURE_BORDER
+from config import config1, config2, BOUND
 
 
-def apply_decal_if_inside_border(point, polygon, h_inv, limit):
+def apply_decal_if_inside_border(picture, decal, point, polygon, h_inv, limit):
     """
     If point inside border (Polygon), apply decal
     """
@@ -14,21 +14,24 @@ def apply_decal_if_inside_border(point, polygon, h_inv, limit):
         decal_point = find_decal_point(h_inv, point, limit)
         picture.putpixel(point, decal.getpixel(decal_point))
 
-# Open original image
-cwd = os.getcwd()
-picture = Image.open(os.path.join(cwd, "images", PICTURE))
-decal = Image.open(os.path.join(cwd, "images", DECAL))
-polygon = get_polygon(PICTURE_BORDER)
-limit = (decal.width-0.009, decal.height-0.009)
-DECAL_BORDER = [(0,0), (500,0), (500, 500), (0, 500)]
+def build_image(config):
+    # Open original image
+    cwd = os.getcwd()
+    picture = Image.open(os.path.join(cwd, "images", config["PICTURE"]))
+    decal = Image.open(os.path.join(cwd, "images", config["DECAL"]))
+    polygon = get_polygon(config["PICTURE_BORDER"])
+    limit = (decal.width-BOUND, decal.height-BOUND)
+    DECAL_BORDER = [(0,0), (decal.width,0), (decal.width, decal.height), (0, decal.height)]
 
-# Find Inverse Homography
-h_inv = find_h_inv(PICTURE_BORDER, DECAL_BORDER)
+    # Find Inverse Homography
+    h_inv = find_h_inv(config["PICTURE_BORDER"], DECAL_BORDER)
 
-# Run for every pixel in Picture
-for i in range(picture.width):
-    for j in range(picture.height):
-        apply_decal_if_inside_border((i,j), polygon, h_inv, limit)
+    # Run for every pixel in Picture
+    for i in range(picture.width):
+        for j in range(picture.height):
+            apply_decal_if_inside_border(picture, decal, (i,j), polygon, h_inv, limit)
+    # Save result
+    picture.save(config["NAME"], "JPEG")
 
-# Save result
-picture.save("result.jpg", "JPEG")
+build_image(config1)
+build_image(config2)
