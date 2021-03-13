@@ -19,8 +19,8 @@ cwd = os.getcwd()
 picture = Image.open(os.path.join(cwd, "images", PICTURE))
 decal = Image.open(os.path.join(cwd, "images", DECAL))
 polygon = get_polygon(PICTURE_BORDER)
-limit = (decal.width-1, decal.height-1)
-DECAL_BORDER = [(0,0), (limit[0]+1,0), (limit[0]+1, limit[1]+1), (0, limit[1]+1)]
+limit = (decal.width-0.009, decal.height-0.009)
+DECAL_BORDER = [(0,0), (500,0), (500, 500), (0, 500)]
 
 # Find Inverse Homography
 h_inv = find_h_inv(PICTURE_BORDER, DECAL_BORDER)
