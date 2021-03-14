@@ -15,7 +15,7 @@ def solve_lin(matrix_u,vector_d):
 def find_h_inv(picture_pixels, decal_pixels):
     """
     Calculates the inverse of Homography matrix by building and solving
-    the linear system of 12x12.
+    the linear system of 13x13.
     
     matrix_u*hom = vector_d
 
