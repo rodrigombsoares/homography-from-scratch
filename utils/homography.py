@@ -41,7 +41,7 @@ def find_h_inv(picture_pixels, decal_pixels):
             # coefficients for lambdas to complete each row 
             lambdas = [0,0,0,0]
             lambdas[idx] = -p_pixels[idx][i]
-            # Build each row by adding 0's and the lambdas coefficients
+            # Build each row by adding the RP2 points, and the lambdas coefficients and filling with 0's
             matrix_u.append([0]*(i*3)+pixel+[0]*(6-i*3)+lambdas)
     # Append lambda1=1 equation
     matrix_u.append([0]*9+[1]+[0]*3)
