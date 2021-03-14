@@ -31,7 +31,7 @@ def build_image(config):
         for j in range(picture.height):
             apply_decal_if_inside_border(picture, decal, (i,j), polygon, h_inv, limit)
     # Save result
-    picture.save(config["NAME"], "PNG")
+    picture.save(os.path.join("results", config["NAME"]), "PNG")
 
 build_image(config1)
 build_image(config2)
